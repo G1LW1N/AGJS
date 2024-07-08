@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <!-- Make sure the path is correct -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3ededfb;
+        }
+
+        .container {
+            display: flex;
+            margin-left: 250px; /* Leave space for the fixed sidebar */
+            min-height: 100vh; /* Ensure the content covers the full viewport height */
+        }
+
+        .sidebar {
+            position: fixed; /* Fixed position to stay in place */
+            width: 250px;
+            height: 100vh; /* Full viewport height */
+            background-color: #1a468c;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background-color: #15457e;
+            text-align: center;
+            width: 100%;
+        }
+
+        .sidebar-header img {
+            max-width: 150px; /* Adjust based on your logo's size */
+            height: auto;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar-menu li {
+            width: 100%;
+            border-bottom: 1px solid #15457e;
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .sidebar-menu li:hover {
+            transform: scale(1.05);
+            background-color: #3f79c0;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: #3f79c0;
+        }
+
+        .sidebar-menu li a i {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f3ededfb; /* Adjust background if necessary */
+        }
+
+        .main-header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: relative; /* Positioning context for absolute positioning */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center align the content horizontally */
+        }
+
+        .add-pet-btn {
+            position: absolute; /* Position the button absolutely within the header */
+            top: 20px; /* Align with header padding */
+            right: 20px; /* Align with header padding */
+            background-color: #0079FF; /* Dark blue background */
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .add-pet-btn:hover {
+            background-color: #15457e; /* Slightly darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+
+        .add-pet-btn:focus {
+            outline: none; /* Remove default focus outline */
+        }
+        .main-header h1 {
+            margin: 0;
+        }
+
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .pets-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .profile {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .profile img {
+            width: 100%;
+            height: auto;
+        }
+
+        .profile h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .profile:hover {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .modal-content p {
+            margin: 10px 0; /* Add some spacing between paragraphs */
+        }
+
+        .edit-btn {
+            background-color: #0079FF; /* Dark blue background */
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 20px; /* Space above the button */
+            display: block; /* Make button occupy full width */
+            width: 100%; /* Full width */
+            text-align: center; /* Center text inside the button */
+        }
+
+        .edit-btn:hover {
+            background-color: #15457e; /* Slightly darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+
+        .edit-btn:focus {
+            outline: none; /* Remove default focus outline */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="pictures/AGJS.png" alt="Website Logo">
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="admin.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="admin-pets.html"><i class="fas fa-paw"></i> Pets</a></li>
+                <li><a href="admin-users.html"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="admin-logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Our Pets</h1>
+                <button class="add-pet-btn">+ Pet</button>
+            </header>
+            <section class="content">
+                <h2>Dogs</h2>
+                <div id="dogs-section" class="pets-container"></div>
+                <br>
+                <h2>Cats</h2>
+                <div id="cats-section" class="pets-container"></div>
+            </section>
+        </main>
+    </div>
+
+    <div id="pet-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modal-image" src="" alt="Pet Image">
+            <h2 id="modal-name"></h2>
+            <p><strong>Age:</strong> <span id="modal-age"></span></p>
+            <p><strong>Gender:</strong> <span id="modal-gender"></span></p>
+            <p id="modal-description"></p>
+            <button class="edit-btn">Edit</button>
+        </div>
+    </div>
+
+    <script src="pet-script.js"></script>
+</body>
+</html>

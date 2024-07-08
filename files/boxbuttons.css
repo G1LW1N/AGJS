@@ -1,0 +1,38 @@
+
+.buttoncontainer {
+    display: flex;
+    gap: 20px;
+    margin-left:100px;
+}
+
+.box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 200px; /* Adjust width as needed */
+    height:200px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    background-color: #fff; /* Example background color */
+}
+
+.box img {
+    width: 280px; /* Adjust image size */
+    height:150px;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
+.box p {
+    margin: 10px 0;
+    padding: 0 10px;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
